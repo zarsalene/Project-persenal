@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For Misou 🐧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+
+<style>
+:root{
+  --blush:#FFF1F5;
+  --cream:#FFFBF7;
+  --bubblegum:#FF7AA8;
+  --bubblegum-deep:#E85C8C;
+  --ice:#CDE8F3;
+  --plum:#46243C;
+  --plum-soft:#7A5570;
+  --coral:#FFAE7B;
+  --shadow:0 10px 30px rgba(198,110,148,.18);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(120% 60% at 50% 0%, #FFE1EC 0%, var(--blush) 55%, #FDF6FA 100%);
+  color:var(--plum);
+  font-family:'Nunito',system-ui,sans-serif;
+  font-size:1.0625rem;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ---------- shared ---------- */
+.wrap{width:100%;max-width:38rem;margin:0 auto;padding:0 1.25rem}
+h1,h2,.big{font-family:'Fredoka',system-ui,sans-serif;line-height:1.15;letter-spacing:-.01em}
+section{padding:4.5rem 0}
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:2rem 1.25rem 3rem;
+  position:relative;
+}
+.hero h1{
+  font-size:clamp(2.4rem,10vw,4rem);
+  font-weight:700;
+  margin:1.5rem 0 .4rem;
+  color:var(--bubblegum-deep);
+}
+.hero p{
+  margin:0 auto;
+  max-width:26rem;
+  color:var(--plum-soft);
+  font-size:1.1rem;
+}
+.penguin{width:min(58vw,230px);height:auto;filter:drop-shadow(0 14px 22px rgba(198,110,148,.25))}
+.penguin .body-group{transform-origin:50% 92%;animation:waddle 3.4s ease-in-out infinite}
+.penguin .heart{transform-origin:50% 50%;animation:beat 1.5s ease-in-out infinite}
+@keyframes waddle{0%,100%{transform:rotate(-3.5deg)}50%{transform:rotate(3.5deg)}}
+@keyframes beat{0%,100%{transform:scale(1)}45%{transform:scale(1.13)}}
+
+.scroll-cue{
+  margin-top:2.75rem;
+  font-family:'Fredoka',sans-serif;
+  font-size:.95rem;
+  color:var(--bubblegum-deep);
+  background:rgba(255,255,255,.75);
+  border:2px solid #FFD3E2;
+  border-radius:999px;
+  padding:.55rem 1.25rem;
+  text-decoration:none;
+  display:inline-block;
+}
+.scroll-cue:hover{background:#fff}
+
+/* floating hearts behind hero */
+.float{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.float span{position:absolute;bottom:-3rem;font-size:1.2rem;opacity:.5;animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115svh) rotate(40deg);opacity:0}}
+
+/* ---------- letter ---------- */
+.letter{
+  background:var(--cream);
+  border:2px solid #FFDCE8;
+  border-radius:26px;
+  padding:2.25rem 1.75rem;
+  box-shadow:var(--shadow);
+}
+.letter h2{font-size:1.55rem;margin:0 0 1.1rem;color:var(--bubblegum-deep)}
+.letter p{margin:0 0 1rem}
+.letter p:last-child{margin-bottom:0}
+.sign{
+  font-family:'Fredoka',sans-serif;
+  color:var(--bubblegum-deep);
+  margin-top:1.5rem;
+  text-align:right;
+}
+
+/* ---------- questions ---------- */
+.step{
+  background:#fff;
+  border:2px solid #FFE3EC;
+  border-radius:24px;
+  padding:1.6rem 1.4rem;
+  margin-bottom:1.15rem;
+  box-shadow:var(--shadow);
+}
+.step[hidden]{display:none}
+.step .q{
+  font-family:'Fredoka',sans-serif;
+  font-size:1.2rem;
+  margin:0 0 1.1rem;
+}
+.opts{display:flex;flex-wrap:wrap;gap:.6rem}
+button{font:inherit;cursor:pointer}
+.opt{
+  font-family:'Fredoka',sans-serif;
+  font-size:1rem;
+  background:var(--ice);
+  color:var(--plum);
+  border:2px solid #A9D6E8;
+  border-radius:999px;
+  padding:.6rem 1.15rem;
+  transition:transform .15s ease,background .15s ease;
+}
+.opt:hover{background:#B9E0EF;transform:translateY(-2px)}
+.opt.chosen{background:var(--bubblegum);border-color:var(--bubblegum-deep);color:#fff}
+.opt[disabled]{cursor:default;opacity:.55}
+.opt.chosen[disabled]{opacity:1}
+.reply{
+  margin:1.1rem 0 0;
+  padding:.9rem 1.1rem;
+  background:var(--blush);
+  border-left:4px solid var(--bubblegum);
+  border-radius:0 14px 14px 0;
+  font-style:italic;
+  color:var(--plum-soft);
+}
+.reply[hidden]{display:none}
+
+/* ---------- the big question ---------- */
+.finale-q{
+  text-align:center;
+  background:linear-gradient(170deg,#fff 0%,#FFF3F8 100%);
+  border:3px solid var(--bubblegum);
+  border-radius:30px;
+  padding:2.5rem 1.5rem;
+  box-shadow:0 16px 40px rgba(232,92,140,.22);
+}
+.finale-q .big{
+  font-size:clamp(1.5rem,6.5vw,2.1rem);
+  font-weight:700;
+  color:var(--bubblegum-deep);
+  margin:0 0 .5rem;
+}
+.finale-q .sub{color:var(--plum-soft);margin:0 0 1.9rem}
+.answer-zone{position:relative;min-height:5.5rem;display:flex;gap:1rem;justify-content:center;align-items:center;flex-wrap:wrap}
+.yes{
+  font-family:'Fredoka',sans-serif;font-weight:700;
+  font-size:1.3rem;color:#fff;
+  background:var(--bubblegum);
+  border:none;border-radius:999px;
+  padding:.85rem 2.4rem;
+  box-shadow:0 8px 0 var(--bubblegum-deep);
+  transition:transform .2s ease,font-size .2s ease;
+}
+.yes:hover{transform:translateY(-3px)}
+.yes:active{transform:translateY(4px);box-shadow:0 4px 0 var(--bubblegum-deep)}
+.no{
+  font-family:'Fredoka',sans-serif;
+  font-size:1rem;color:var(--plum-soft);
+  background:#fff;
+  border:2px solid #E7CFDD;
+  border-radius:999px;
+  padding:.7rem 1.5rem;
+  transition:transform .25s ease,opacity .25s ease;
+}
+
+/* ---------- finale ---------- */
+.finale{text-align:center}
+.finale[hidden]{display:none}
+.finale h2{font-size:clamp(1.8rem,8vw,2.6rem);color:var(--bubblegum-deep);margin:0 0 1rem}
+.finale .promise{
+  background:var(--cream);
+  border:2px dashed var(--bubblegum);
+  border-radius:24px;
+  padding:1.75rem 1.5rem;
+  text-align:left;
+  box-shadow:var(--shadow);
+}
+.finale .promise li{margin-bottom:.65rem}
+.finale .promise ul{padding-left:1.2rem;margin:.5rem 0 0}
+.pair{width:min(70vw,280px);margin:1.5rem auto 0;display:block}
+
+/* send-her-answers block */
+.send{margin-top:1.75rem}
+.send p{color:var(--plum-soft);font-size:.98rem;margin:0 0 1rem}
+.send-btn{
+  font-family:'Fredoka',sans-serif;font-size:1.1rem;
+  display:inline-block;text-decoration:none;
+  color:#fff;background:var(--bubblegum);
+  border-radius:999px;padding:.8rem 1.9rem;
+  box-shadow:0 8px 0 var(--bubblegum-deep);
+}
+.send-btn:hover{transform:translateY(-2px)}
+.copy-btn{
+  font-family:'Fredoka',sans-serif;font-size:.95rem;
+  display:block;margin:1rem auto 0;
+  color:var(--plum-soft);background:none;border:none;
+  text-decoration:underline;
+}
+
+footer{padding:2.5rem 0 3.5rem;text-align:center;color:var(--plum-soft);font-size:.9rem}
+
+/* confetti */
+.confetti{position:fixed;top:-2rem;font-size:1.6rem;pointer-events:none;z-index:99;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110svh) rotate(360deg);opacity:.2}}
+
+:focus-visible{outline:3px solid var(--bubblegum-deep);outline-offset:3px;border-radius:999px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="float" id="float" aria-hidden="true"></div>
+
+  <!-- cute penguin holding a heart -->
+  <svg class="penguin" viewBox="0 0 200 220" role="img" aria-label="A little penguin holding a heart">
+    <ellipse cx="100" cy="209" rx="52" ry="8" fill="#F2CBDC"/>
+    <g class="body-group">
+      <!-- feet -->
+      <ellipse cx="82" cy="198" rx="16" ry="7" fill="#FFAE7B"/>
+      <ellipse cx="118" cy="198" rx="16" ry="7" fill="#FFAE7B"/>
+      <!-- body -->
+      <ellipse cx="100" cy="128" rx="60" ry="72" fill="#4B3350"/>
+      <!-- flippers -->
+      <ellipse cx="42" cy="132" rx="14" ry="34" fill="#3E2A44" transform="rotate(12 42 132)"/>
+      <ellipse cx="158" cy="132" rx="14" ry="34" fill="#3E2A44" transform="rotate(-12 158 132)"/>
+      <!-- belly -->
+      <ellipse cx="100" cy="136" rx="43" ry="60" fill="#FFFBF7"/>
+      <!-- head -->
+      <circle cx="100" cy="76" r="48" fill="#4B3350"/>
+      <ellipse cx="100" cy="88" rx="34" ry="32" fill="#FFFBF7"/>
+      <!-- eyes -->
+      <circle cx="86" cy="74" r="7.5" fill="#2E1E33"/>
+      <circle cx="114" cy="74" r="7.5" fill="#2E1E33"/>
+      <circle cx="88.5" cy="71" r="2.6" fill="#fff"/>
+      <circle cx="116.5" cy="71" r="2.6" fill="#fff"/>
+      <!-- blush -->
+      <ellipse cx="72" cy="90" rx="9" ry="6" fill="#FF9CBE" opacity=".75"/>
+      <ellipse cx="128" cy="90" rx="9" ry="6" fill="#FF9CBE" opacity=".75"/>
+      <!-- beak -->
+      <path d="M100 82 L110 93 L100 99 L90 93 Z" fill="#FFAE7B"/>
+      <!-- pink bow on head -->
+      <path d="M100 30 q-16 -13 -20 2 q4 10 20 4 Z" fill="#FF7AA8"/>
+      <path d="M100 30 q16 -13 20 2 q-4 10 -20 4 Z" fill="#FF7AA8"/>
+      <circle cx="100" cy="34" r="5" fill="#E85C8C"/>
+      <!-- heart held in flippers -->
+      <path class="heart" d="M100 150 c-13 -13 -26 -5 -26 7 c0 12 16 20 26 28 c10 -8 26 -16 26 -28 c0 -12 -13 -20 -26 -7 Z" fill="#FF7AA8"/>
+    </g>
+  </svg>
+
+  <h1>Misou, I&rsquo;m sorry.</h1>
+  <p>This little penguin came all the way here to say it properly. Will you read to the end?</p>
+  <a class="scroll-cue" href="#letter">Okay, I&rsquo;ll read 🐧</a>
+</header>
+
+<!-- ============ THE LETTER ============ -->
+<!-- EDIT ME: put your real words here. This is the heart of the page. -->
+<section id="letter">
+  <div class="wrap">
+    <article class="letter">
+      <h2>What I actually want to say</h2>
+      <p>I hurt you, and I&rsquo;m not going to explain it away or make it smaller than it was. You had every right to be angry with me.</p>
+      <p>I&rsquo;ve been sitting with it, and what keeps coming back to me isn&rsquo;t how to win the argument. It&rsquo;s your face. It&rsquo;s that I was the reason it looked like that. That&rsquo;s the part I can&rsquo;t stand.</p>
+      <p>I&rsquo;m not asking you to pretend it didn&rsquo;t happen. I&rsquo;m asking for a new page &mdash; a blank one, that I write on more carefully this time.</p>
+      <p>You&rsquo;re not a chapter of my life, Misou. You&rsquo;re the whole book. No matter what.</p>
+      <p class="sign">&mdash; Arsalene</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ QUESTIONS ============ -->
+<section>
+  <div class="wrap" id="steps">
+
+    <div class="step" data-step="1">
+      <p class="q">First, honestly &mdash; how angry are you right now?</p>
+      <div class="opts">
+        <button class="opt" data-reply="Fair. I&rsquo;d be furious at me too. I&rsquo;m not going anywhere while you cool down.">Very 😤</button>
+        <button class="opt" data-reply="I&rsquo;ll take &lsquo;a little.&rsquo; That&rsquo;s more mercy than I earned today.">A little 😐</button>
+        <button class="opt" data-reply="Then I got lucky. But I still owe you the apology, angry or not.">Not anymore 🥺</button>
+      </div>
+      <p class="reply" hidden></p>
+    </div>
+
+    <div class="step" data-step="2" hidden>
+      <p class="q">Do you believe I know what I did wrong?</p>
+      <div class="opts">
+        <button class="opt" data-reply="Good. Because I do. And knowing it means I get to not do it again.">Yes 💗</button>
+        <button class="opt" data-reply="Then let me say it out loud to your face, not to a website. Ask me tonight and I&rsquo;ll tell you exactly what I did.">Not really 🙃</button>
+      </div>
+      <p class="reply" hidden></p>
+    </div>
+
+    <div class="step" data-step="3" hidden>
+      <p class="q">What would help more right now?</p>
+      <div class="opts">
+        <button class="opt" data-reply="Then I&rsquo;ll be quiet and just stay close. No pushing.">Space, quietly 🌙</button>
+        <button class="opt" data-reply="Then I&rsquo;m coming to you. Say when.">Talk to me 📞</button>
+        <button class="opt" data-reply="Chocolate it is. Obviously chocolate. I should have led with chocolate.">Chocolate 🍫</button>
+      </div>
+      <p class="reply" hidden></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ THE BIG QUESTION ============ -->
+<section id="bigq" hidden>
+  <div class="wrap">
+    <div class="finale-q">
+      <p class="big">So, Misou &mdash; will you still be my fiancée?</p>
+      <p class="sub">New page. Same me, trying harder. You, my whole life, no matter what.</p>
+      <div class="answer-zone">
+        <button class="yes" id="yes">Yes 💍</button>
+        <button class="no" id="no">No</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINALE ============ -->
+<section class="finale" id="finale" hidden>
+  <div class="wrap">
+    <h2>You said yes 🥹💗</h2>
+    <div class="promise">
+      <p>Then here&rsquo;s what I&rsquo;m signing:</p>
+      <ul>
+        <li>I&rsquo;ll listen before I defend myself.</li>
+        <li>I&rsquo;ll say sorry the same day, not three days later.</li>
+        <li>I&rsquo;ll never make you feel small to feel right.</li>
+        <li>Angry days, tired days, all of them &mdash; I stay.</li>
+      </ul>
+    </div>
+
+    <div class="send">
+      <p>Want me to see what you answered? This sends your answers to me on WhatsApp &mdash; only if you tap it.</p>
+      <a class="send-btn" id="wa" href="#" target="_blank" rel="noopener">Send my answers 💌</a>
+      <button class="copy-btn" id="copy">or copy them instead</button>
+    </div>
+
+    <svg class="pair" viewBox="0 0 240 150" role="img" aria-label="Two penguins side by side under a heart">
+      <ellipse cx="120" cy="142" rx="80" ry="7" fill="#F2CBDC"/>
+      <g>
+        <ellipse cx="82" cy="95" rx="34" ry="42" fill="#4B3350"/>
+        <ellipse cx="82" cy="101" rx="24" ry="33" fill="#FFFBF7"/>
+        <circle cx="82" cy="55" r="27" fill="#4B3350"/>
+        <ellipse cx="82" cy="62" rx="19" ry="18" fill="#FFFBF7"/>
+        <circle cx="74" cy="53" r="4.2" fill="#2E1E33"/>
+        <circle cx="90" cy="53" r="4.2" fill="#2E1E33"/>
+        <ellipse cx="66" cy="66" rx="5.5" ry="3.6" fill="#FF9CBE" opacity=".8"/>
+        <path d="M82 60 l6 6 l-6 4 l-6 -4 Z" fill="#FFAE7B"/>
+        <path d="M82 26 q-11 -9 -14 1 q3 7 14 3 Z" fill="#FF7AA8"/>
+        <path d="M82 26 q11 -9 14 1 q-3 7 -14 3 Z" fill="#FF7AA8"/>
+      </g>
+      <g>
+        <ellipse cx="158" cy="95" rx="34" ry="42" fill="#4B3350"/>
+        <ellipse cx="158" cy="101" rx="24" ry="33" fill="#FFFBF7"/>
+        <circle cx="158" cy="55" r="27" fill="#4B3350"/>
+        <ellipse cx="158" cy="62" rx="19" ry="18" fill="#FFFBF7"/>
+        <circle cx="150" cy="53" r="4.2" fill="#2E1E33"/>
+        <circle cx="166" cy="53" r="4.2" fill="#2E1E33"/>
+        <ellipse cx="174" cy="66" rx="5.5" ry="3.6" fill="#FF9CBE" opacity=".8"/>
+        <path d="M158 60 l6 6 l-6 4 l-6 -4 Z" fill="#FFAE7B"/>
+      </g>
+      <path d="M120 22 c-9 -9 -18 -3 -18 5 c0 8 11 14 18 19 c7 -5 18 -11 18 -19 c0 -8 -9 -14 -18 -5 Z" fill="#FF7AA8"/>
+    </svg>
+  </div>
+</section>
+
+<footer>made with too much pink, for Misou 🐧💗</footer>
+
+<script>
+/* ============================================================
+   EDIT ME: your WhatsApp number in full international format,
+   digits only, no + and no spaces. Tunisia = 216 + your number.
+   Example: 21612345678
+   ============================================================ */
+const MY_WHATSAPP = '21690431500';
+
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const answers = [];
+
+/* ---- floating hearts in the hero ---- */
+(function(){
+  if (reduced) return;
+  const box = document.getElementById('float');
+  const glyphs = ['💗','🩷','💕','🐧','💖'];
+  for (let i = 0; i < 14; i++){
+    const s = document.createElement('span');
+    s.textContent = glyphs[i % glyphs.length];
+    s.style.left = Math.random() * 96 + '%';
+    s.style.animationDuration = (9 + Math.random() * 9) + 's';
+    s.style.animationDelay = (Math.random() * 10) + 's';
+    s.style.fontSize = (0.9 + Math.random() * 1.1) + 'rem';
+    box.appendChild(s);
+  }
+})();
+
+/* ---- question flow ---- */
+document.querySelectorAll('.step').forEach(step => {
+  step.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      answers.push({
+        q: step.querySelector('.q').textContent.trim(),
+        a: btn.textContent.trim()
+      });
+
+      const reply = step.querySelector('.reply');
+      reply.innerHTML = btn.dataset.reply;
+      reply.hidden = false;
+
+      step.querySelectorAll('.opt').forEach(b => { b.disabled = true; });
+      btn.classList.add('chosen');
+
+      const next = step.nextElementSibling;
+      if (next && next.classList.contains('step')){
+        next.hidden = false;
+        setTimeout(() => next.scrollIntoView({block:'center'}), 450);
+      } else {
+        const bigq = document.getElementById('bigq');
+        bigq.hidden = false;
+        setTimeout(() => bigq.scrollIntoView({block:'center'}), 450);
+      }
+    });
+  });
+});
+
+/* ---- the No button will not be caught ---- */
+(function(){
+  const no = document.getElementById('no');
+  const lines = ['No','Are you sure?','Really?','Think again 🥺','Wrong button 🐧','It won\u2019t let you','Only Yes works, sorry'];
+  let i = 0, scale = 1;
+
+  function dodge(){
+    i = Math.min(i + 1, lines.length - 1);
+    no.textContent = lines[i];
+    scale = Math.max(scale - 0.11, 0.25);
+    const dx = (Math.random() - 0.5) * 150;
+    const dy = (Math.random() - 0.5) * 70;
+    no.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+    if (scale <= 0.3){ no.style.opacity = '0'; no.disabled = true; }
+  }
+
+  no.addEventListener('mouseenter', dodge);
+  no.addEventListener('click', e => { e.preventDefault(); dodge(); });
+  no.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, {passive:false});
+})();
+
+/* ---- Yes: hearts everywhere ---- */
+function buildMessage(){
+  let out = 'Misou answered your penguin page 🐧💗\n\n';
+  answers.forEach((item, i) => {
+    out += (i + 1) + '. ' + item.q + '\n→ ' + item.a + '\n\n';
+  });
+  return out.trim();
+}
+
+document.getElementById('yes').addEventListener('click', () => {
+  const finale = document.getElementById('finale');
+  finale.hidden = false;
+  setTimeout(() => finale.scrollIntoView({block:'start'}), 300);
+
+  answers.push({ q: 'Will you still be my fiancée?', a: 'Yes 💍' });
+
+  const msg = buildMessage();
+  document.getElementById('wa').href =
+    'https://wa.me/' + MY_WHATSAPP + '?text=' + encodeURIComponent(msg);
+
+  const copy = document.getElementById('copy');
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(msg);
+      copy.textContent = 'copied ✓';
+    } catch {
+      copy.textContent = 'copy blocked — screenshot it instead';
+    }
+  });
+
+  if (reduced) return;
+  const glyphs = ['💗','🩷','💕','💖','🐧','✨','💍'];
+  for (let i = 0; i < 70; i++){
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      c.style.left = Math.random() * 96 + 'vw';
+      c.style.animationDuration = (2.6 + Math.random() * 2.4) + 's';
+      c.style.fontSize = (1.1 + Math.random() * 1.4) + 'rem';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5200);
+    }, i * 45);
+  }
+});
+</script>
+</body>
+</html>
